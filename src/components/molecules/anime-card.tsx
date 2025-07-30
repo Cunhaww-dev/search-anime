@@ -1,4 +1,3 @@
-// /components/AnimeCard.tsx
 
 import { Anime } from "@/types";
 import Image from "next/image";
