@@ -1,4 +1,5 @@
 // /app/components/atoms/Logo.tsx
+import Image from "next/image";
 import Link from "next/link";
 
 const Logo = () => {
@@ -7,7 +8,7 @@ const Logo = () => {
       href="/"
       className="text-2xl font-bold text-white hover:text-blue-500 transition-colors"
     >
-      Anime<span className="text-blue-500">Nexus</span>
+      <Image src="/logo.svg" alt="Logo" width={70} height={70} priority />
     </Link>
   );
 };

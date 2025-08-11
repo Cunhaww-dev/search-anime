@@ -4,7 +4,7 @@
 //    Se você o chamou de 'AnimeGrid.tsx', o caminho é o abaixo.
 import AnimeCard from "@/components/molecules/anime-card";
 import AnimeList from "@/components/organisms/content-grid";
-import jikanApi from "@/lib/api";
+import { jikanAPI } from "@/http/api";
 import { Anime } from "@/types";
 
 // Tipagem para as props da página, incluindo os parâmetros da URL
@@ -17,7 +17,7 @@ interface GenrePageProps {
 // Função para buscar os animes de um gênero específico
 async function getAnimesByGenre(id: string): Promise<Anime[]> {
   try {
-    const response = await jikanApi.get("/anime", {
+    const response = await jikanAPI.get("/anime", {
       params: {
         genres: id,
         limit: 24, // Vamos limitar a 24 animes por página
@@ -35,7 +35,7 @@ async function getAnimesByGenre(id: string): Promise<Anime[]> {
 // Ela busca o nome do gênero para podermos exibir no título.
 async function getGenreDetails(id: string): Promise<{ name: string } | null> {
   try {
-    const response = await jikanApi.get(`/genres/anime`);
+    const response = await jikanAPI.get(`/genres/anime`);
     // Encontra o gênero específico na lista de todos os gêneros
     const genre = response.data.data.find(
       (g: any) => g.mal_id.toString() === id

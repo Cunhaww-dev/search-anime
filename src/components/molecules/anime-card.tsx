@@ -1,3 +1,4 @@
+// src/app/components/molecules/anime-card.tsx
 
 import { Anime } from "@/types";
 import Image from "next/image";
@@ -8,25 +9,43 @@ interface AnimeCardProps {
 
 const AnimeCard = ({ anime }: AnimeCardProps) => {
   return (
-    <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-600/20 transition-shadow duration-300 max-w-[260px]">
-      <div className="relative aspect-[2/3] w-full max-h-[400px] sm:max-h-[500px] md:max-h-[600px]">
+    // 1. TORNAR O CARD UM CONTAINER FLEX EM COLUNA E COM ALTURA TOTAL
+    //    - `flex flex-col`: Organiza os filhos (imagem, texto) verticalmente.
+    //    - `h-full`: Faz o card ocupar toda a altura da célula da grade.
+    <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-600/20 transition-shadow duration-300 w-full flex flex-col h-full">
+      {/* 2. CONTAINER DA IMAGEM */}
+      {/*    - `aspect-[2/3]`: Força a proporção da imagem a ser consistente. */}
+      <div className="relative w-full aspect-[2/3]">
         <Image
           src={anime.images.webp.large_image_url}
           alt={`Pôster de ${anime.title}`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          style={{ objectFit: "contain" }}
-          className="transition-transform py-2 duration-300 hover:scale-105"
+          // 3. MUDAR PARA `object-cover`
+          //    - `object-cover` garante que a imagem cubra toda a área,
+          //      cortando o excesso se necessário. Isso evita distorções e
+          //      espaços em branco, garantindo altura consistente.
+          className="object-cover"
         />
       </div>
-      <div className="p-3">
+
+      {/* 4. CONTAINER DO TEXTO */}
+      {/*    - `flex-grow`: Faz esta div ocupar todo o espaço vertical restante.
+      //    - `flex flex-col justify-between`: Organiza o título e as informações
+      //      para que o título fique no topo e as infos no rodapé do card. */}
+      <div className="p-3 flex flex-col flex-grow justify-between">
+        {/* Título */}
         <h3
-          className="text-lg font-bold text-gray-200 truncate"
+          className="text-base font-bold text-gray-200 leading-tight"
           title={anime.title}
+          // Adicionamos uma altura mínima para 2 linhas de texto para estabilizar o layout
+          style={{ minHeight: "2.5rem" }}
         >
           {anime.title}
         </h3>
-        <div className="flex justify-between items-center mt-2">
+
+        {/* Informações (Tipo e Nota) */}
+        <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-700/50">
           <span className="text-sm text-gray-400">{anime.type}</span>
           <span className="flex items-center text-sm font-semibold text-yellow-400">
             <svg

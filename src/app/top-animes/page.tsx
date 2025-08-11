@@ -1,7 +1,7 @@
 // src/app/top-animes/page.tsx
 
 import AnimeList from "@/components/organisms/content-grid";
-import jikanApi from "@/lib/api";
+import { jikanAPI } from "@/http/api";
 import { Anime, JikanApiResponse } from "@/types";
 import { AxiosResponse } from "axios";
 
@@ -17,14 +17,12 @@ const removeDuplicateAnimes = (animes: Anime[]): Anime[] => {
 
 async function getTopAnimesFull(): Promise<Anime[]> {
   try {
-    const response: AxiosResponse<JikanApiResponse> = await jikanApi.get(
+    const response: AxiosResponse<JikanApiResponse> = await jikanAPI.get(
       "/top/anime"
     );
 
     const animesFromApi = response.data.data || [];
 
-    // AQUI ESTÁ A CORREÇÃO:
-    // Passamos os dados da API pela nossa função de limpeza antes de retorná-los.
     const uniqueAnimes = removeDuplicateAnimes(animesFromApi);
 
     return uniqueAnimes;
@@ -34,7 +32,6 @@ async function getTopAnimesFull(): Promise<Anime[]> {
   }
 }
 
-// O resto da página não precisa de nenhuma alteração
 export default async function TopAnimesPage() {
   const topAnimes = await getTopAnimesFull();
 
