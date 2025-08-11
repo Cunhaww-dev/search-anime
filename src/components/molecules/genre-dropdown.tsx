@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import jikanApi from "@/lib/api";
+import { jikanAPI } from "@/http/api";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -31,7 +31,7 @@ export function GenreDropdown() {
     const fetchGenres = async () => {
       try {
         setIsLoading(true);
-        const response = await jikanApi.get("/genres/anime");
+        const response = await jikanAPI.get("/genres/anime");
         const allGenres = response.data.data || [];
 
         // Filtra os gêneros indesejados antes de salvar no estado.

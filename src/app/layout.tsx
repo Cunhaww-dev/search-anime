@@ -4,12 +4,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/organisms/footer";
-import Header from "@/components/organisms/header";
+import { Navbar } from "@/components/organisms/navbar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AnimeNexus",
+  title: "All Animes",
   description: "Seu portal para explorar o mundo dos animes.",
 };
 
@@ -22,8 +23,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className="dark">
       <body className={inter.className}>
-        <Header />
-        <div className="flex-grow">{children}</div>
+        <SidebarProvider>
+          <Navbar>{children}</Navbar>
+        </SidebarProvider>
         <Footer />
       </body>
     </html>
