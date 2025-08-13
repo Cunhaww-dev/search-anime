@@ -2,8 +2,8 @@
 
 // 1. O import do AnimeGrid deve apontar para o arquivo correto.
 //    Se você o chamou de 'AnimeGrid.tsx', o caminho é o abaixo.
-import AnimeCard from "@/components/molecules/anime-card";
-import AnimeList from "@/components/organisms/content-grid";
+import AnimeCard from "@/components/molecules/animeCard";
+import AnimeList from "@/components/organisms/animeList";
 import { jikanAPI } from "@/http/api";
 import { Anime } from "@/types";
 

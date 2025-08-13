@@ -3,7 +3,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/organisms/footer";
 import { Navbar } from "@/components/organisms/navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
   description: "Seu portal para explorar o mundo dos animes.",
 };
 
-// Tipamos as props do layout
 export default function RootLayout({
   children,
 }: {
@@ -26,7 +24,6 @@ export default function RootLayout({
         <SidebarProvider>
           <Navbar>{children}</Navbar>
         </SidebarProvider>
-        <Footer />
       </body>
     </html>
   );

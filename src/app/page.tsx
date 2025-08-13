@@ -1,6 +1,6 @@
 // /app/page.tsx
 
-import AnimeCard from "@/components/molecules/anime-card";
+import AnimeCard from "@/components/molecules/animeCard";
 import { jikanAPI } from "@/http/api";
 import { Anime, JikanApiResponse } from "../types"; // Importamos os tipos
 import { AxiosResponse } from "axios";
@@ -20,23 +20,24 @@ async function getTopAnimes(): Promise<Anime[]> {
 }
 
 export default async function HomePage() {
-  const topAnimes = await getTopAnimes();
+  // const topAnimes = await getTopAnimes();
 
   return (
-    <main className="bg-gray-900 min-h-screen sm:p-6 md:p-8">
-      <div className="mx-auto">
-        <section>
-          <h2 className="text-2xl font-bold text-gray-200 mb-6 border-l-4 border-blue-500 pl-4">
-            Em Alta
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+    <main className="p-4 sm:p-6 md:p-8">
+      <section>
+        <h2 className="text-2xl font-bold text-gray-200 mb-6 border-l-4 border-blue-500 pl-4">
+          Aqui você pode explorar os animes
+        </h2>
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
             {topAnimes.map((anime) => (
               <AnimeCard key={anime.mal_id} anime={anime} />
             ))}
-          </div>
-        </section>
-      </div>
+          </div> */}
+        {/* TASK 
+            Criar seções de carroseis por gênero. Utilizasr Netflix de exemplo
+            Criar um componente para isso e chamar aqui
+          */}
+      </section>
     </main>
   );
 }

@@ -1,17 +1,18 @@
 // src/app/top-animes/page.tsx
 
-import AnimeList from "@/components/organisms/content-grid";
+import { SearchGlobal } from "@/components/atoms/search.";
+import AnimeList from "@/components/organisms/animeList";
 import { jikanAPI } from "@/http/api";
 import { Anime, JikanApiResponse } from "@/types";
 import { AxiosResponse } from "axios";
+import { Search } from "lucide-react";
 
-// Função para remover duplicados de um array de animes com base no mal_id
 const removeDuplicateAnimes = (animes: Anime[]): Anime[] => {
-  const seen = new Set(); // Um Set para guardar os IDs que já vimos
+  const seen = new Set();
   return animes.filter((anime) => {
     const duplicate = seen.has(anime.mal_id);
     seen.add(anime.mal_id);
-    return !duplicate; // Retorna 'true' apenas se o ID não foi visto antes
+    return !duplicate;
   });
 };
 

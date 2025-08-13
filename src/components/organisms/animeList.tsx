@@ -1,11 +1,11 @@
 import { Anime } from "@/types";
-import AnimeCard from "../molecules/anime-card";
+import AnimeCard from "../molecules/animeCard";
 
 interface AnimeListProps {
   animes: Anime[];
 }
 
-const AnimeList = ({ animes }: AnimeListProps) => {
+export default function AnimeList({ animes }: AnimeListProps) {
   if (!animes || animes.length === 0) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -23,6 +23,4 @@ const AnimeList = ({ animes }: AnimeListProps) => {
       ))}
     </div>
   );
-};
-
-export default AnimeList;
+}

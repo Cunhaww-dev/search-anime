@@ -5,7 +5,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import classNames from "classnames";
 import {
   Home,
@@ -17,6 +16,8 @@ import {
   Search,
 } from "lucide-react";
 import Logo from "../atoms/logo";
+import Footer from "./footer";
+import { SearchGlobal } from "../atoms/search.";
 
 // --- Dados do Menu (sem alterações) ---
 const menuItems = [
@@ -37,7 +38,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
     // 1. O CONTAINER PRINCIPAL - A MUDANÇA MAIS IMPORTANTE
     // Usamos 'flex' em vez de 'grid'. É mais simples para este tipo de layout
     // e evita problemas de sobreposição.
-    <div className="flex h-screen min-h-screen w-full bg-gray-950 text-gray-300">
+    <div className="flex min-h-screen w-full bg-gray-950 text-gray-300">
       {/* ========================================================================= */}
       {/* 2. SIDEBAR LATERAL (Aside)                                              */}
       {/* ========================================================================= */}
@@ -109,42 +110,18 @@ export function Navbar({ children }: { children: React.ReactNode }) {
       {/* Este container agora tem uma margem à esquerda que se ajusta dinamicamente */}
       <div
         className={classNames(
+          // MUDANÇA 2: Este container também se torna um flex-col para organizar o main e o footer.
           "flex flex-col flex-1 transition-all duration-300",
-          // A margem à esquerda agora corresponde exatamente à largura da sidebar.
           isSidebarOpen ? "ml-72" : "ml-20"
         )}
       >
-        {/* NAVBAR SUPERIOR */}
-        {/* A navbar não precisa mais de padding, pois o container pai já a posiciona. */}
-        <nav className="fixed py-8 top-0 z-40 w-full bg-gray-900 border-b border-gray-800 h-16">
-          {/* O conteúdo da navbar (busca, perfil) vai aqui.
-               Precisa de um ajuste para não ficar por baixo da sidebar. */}
-          <div
-            className={classNames(
-              "flex items-center justify-end h-full px-6 transition-all duration-300",
-              isSidebarOpen ? "w-[calc(100%-18rem)]" : "w-[calc(100%-5rem)]"
-            )}
-          >
-            <div className="relative w-64">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-                size={20}
-              />
-              <input
-                type="text"
-                placeholder="Buscar animes..."
-                className="w-full bg-gray-800 border border-transparent rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:border-purple-500"
-              />
-            </div>
-            <div className="w-10 h-10 ml-4 rounded-full bg-gray-700"></div>
-          </div>
-        </nav>
+        <div className="flex bg-gray-900 pt-2 pr-4 justify-end">
+          <SearchGlobal />
+        </div>
 
         {/* CONTEÚDO PRINCIPAL */}
-        <main className="pt-16">
-          {/* pt-16 para dar espaço para a navbar fixa */}
-          <div>{children}</div>
-        </main>
+        <main className="flex-1">{children}</main>
+        <Footer />
       </div>
     </div>
   );
