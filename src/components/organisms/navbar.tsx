@@ -24,7 +24,7 @@ const menuItems = [
   { title: "Início", icon: <Home size={20} />, route: "/" },
   { title: "Top Animes", icon: <Star size={20} />, route: "/top-animes" },
   { title: "Temporada", icon: <CalendarDays size={20} />, route: "/season" },
-  { title: "Gêneros", icon: <Clapperboard size={20} />, route: "/genres" },
+  { title: "Gêneros", icon: <Clapperboard size={20} />, route: "/genres/id" },
 ];
 
 // --- Componente Principal ---
@@ -35,18 +35,10 @@ export function Navbar({ children }: { children: React.ReactNode }) {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    // 1. O CONTAINER PRINCIPAL - A MUDANÇA MAIS IMPORTANTE
-    // Usamos 'flex' em vez de 'grid'. É mais simples para este tipo de layout
-    // e evita problemas de sobreposição.
     <div className="flex min-h-screen w-full bg-gray-950 text-gray-300">
-      {/* ========================================================================= */}
-      {/* 2. SIDEBAR LATERAL (Aside)                                              */}
-      {/* ========================================================================= */}
-      {/* A sidebar agora é um elemento flexível que não desaparece. */}
       <aside
         className={classNames(
           "fixed top-0 left-0 z-50 h-screen flex flex-col bg-gray-900 border-r border-gray-800 transition-all duration-300",
-          // A largura da sidebar muda, mas ela nunca some.
           isSidebarOpen ? "w-72" : "w-20"
         )}
       >
@@ -67,7 +59,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded-lg hover:bg-gray-800"
+            className="pr-2.5 py-2 rounded-lg hover:cursor-pointer"
           >
             <PanelLeft size={22} />
           </button>
@@ -81,7 +73,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
               <li key={item.title}>
                 <Link
                   href={item.route}
-                  title={isSidebarOpen ? "" : item.title} // Dica de ferramenta quando colapsado
+                  title={isSidebarOpen ? "" : item.title}
                   className={classNames(
                     "flex items-center p-2 rounded-lg transition-colors",
                     isActive ? "bg-purple-600 text-white" : "hover:bg-gray-800",
@@ -104,13 +96,8 @@ export function Navbar({ children }: { children: React.ReactNode }) {
         </ul>
       </aside>
 
-      {/* ========================================================================= */}
-      {/* 3. CONTAINER DO CONTEÚDO (Navbar + Main)                                */}
-      {/* ========================================================================= */}
-      {/* Este container agora tem uma margem à esquerda que se ajusta dinamicamente */}
       <div
         className={classNames(
-          // MUDANÇA 2: Este container também se torna um flex-col para organizar o main e o footer.
           "flex flex-col flex-1 transition-all duration-300",
           isSidebarOpen ? "ml-72" : "ml-20"
         )}
@@ -119,7 +106,6 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           <SearchGlobal />
         </div>
 
-        {/* CONTEÚDO PRINCIPAL */}
         <main className="flex-1">{children}</main>
         <Footer />
       </div>
