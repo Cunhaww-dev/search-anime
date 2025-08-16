@@ -1,26 +1,21 @@
 // src/app/genres/[id]/page.tsx
 
-// 1. O import do AnimeGrid deve apontar para o arquivo correto.
-//    Se você o chamou de 'AnimeGrid.tsx', o caminho é o abaixo.
-import AnimeCard from "@/components/molecules/animeCard";
 import AnimeList from "@/components/organisms/animeList";
-import { jikanAPI } from "@/http/api";
+import { axiosInstance } from "@/http/api";
 import { Anime } from "@/types";
 
-// Tipagem para as props da página, incluindo os parâmetros da URL
 interface GenrePageProps {
   params: {
-    id: string; // O ID do gênero virá da URL
+    id: string;
   };
 }
 
-// Função para buscar os animes de um gênero específico
 async function getAnimesByGenre(id: string): Promise<Anime[]> {
   try {
-    const response = await jikanAPI.get("/anime", {
+    const response = await axiosInstance.get("/anime", {
       params: {
         genres: id,
-        limit: 24, // Vamos limitar a 24 animes por página
+        limit: 24,
         sfw: true,
       },
     });
@@ -31,12 +26,9 @@ async function getAnimesByGenre(id: string): Promise<Anime[]> {
   }
 }
 
-// 2. ADICIONE ESTA FUNÇÃO DE VOLTA:
-// Ela busca o nome do gênero para podermos exibir no título.
 async function getGenreDetails(id: string): Promise<{ name: string } | null> {
   try {
-    const response = await jikanAPI.get(`/genres/anime`);
-    // Encontra o gênero específico na lista de todos os gêneros
+    const response = await axiosInstance.get(`/genres/anime`);
     const genre = response.data.data.find(
       (g: any) => g.mal_id.toString() === id
     );
@@ -47,16 +39,12 @@ async function getGenreDetails(id: string): Promise<{ name: string } | null> {
   }
 }
 
-// A página é um Server Component, o que é ótimo para SEO e performance
 export default async function GenrePage({ params }: GenrePageProps) {
-  // 3. USE Promise.all PARA BUSCAR OS DADOS EM PARALELO
-  //    Isso irá declarar e preencher tanto 'animes' quanto 'genreDetails'.
   const [animes, genreDetails] = await Promise.all([
     getAnimesByGenre(params.id),
     getGenreDetails(params.id),
   ]);
 
-  // Agora a variável 'genreDetails' existe e este código funcionará.
   const genreName = genreDetails ? genreDetails.name : `Gênero #${params.id}`;
 
   return (
@@ -68,7 +56,6 @@ export default async function GenrePage({ params }: GenrePageProps) {
           </h1>
         </header>
 
-        {/* O uso do AnimeGrid aqui está perfeito! */}
         <AnimeList animes={animes} />
       </div>
     </main>
