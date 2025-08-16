@@ -11,16 +11,20 @@ const removeDuplicatedAnimes = (animes: Anime[]): Anime[] => {
   });
 };
 
-export const useTopAnimes = () => {
+export const useTopAnimes = (page: number = 1, limit: number = 20) => {
   const { getTopAnimes } = UseApi();
 
   return useQuery({
-    queryKey: ["getTopAnimes"],
+    queryKey: ["getTopAnimes", page, limit],
     queryFn: async () => {
-      const animes = await getTopAnimes();
-      const uniqueAnimes = removeDuplicatedAnimes(animes);
-      return uniqueAnimes;
+      const response = await getTopAnimes(page, limit);
+      const uniqueAnimes = removeDuplicatedAnimes(response.data);
+      return {
+        ... response, 
+        data: uniqueAnimes
+      };
     },
-    refetchOnWindowFocus: false, 
+    refetchOnWindowFocus: false,
+    // keepPreviousData: true 
   });
 };

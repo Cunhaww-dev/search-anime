@@ -8,7 +8,7 @@ const Logo = () => {
       href="/"
       className="text-2xl font-bold text-white hover:text-blue-500 transition-colors"
     >
-      <Image src="/logo.svg" alt="Logo" width={70} height={70} priority />
+      <Image src="/logo.svg" alt="Logo" width={60} height={60} priority />
     </Link>
   );
 };

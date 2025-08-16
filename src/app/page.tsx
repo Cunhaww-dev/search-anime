@@ -1,7 +1,7 @@
 // /app/page.tsx
 
 import AnimeCard from "@/components/molecules/animeCard";
-import { jikanAPI } from "@/http/api";
+import { axiosInstance } from "@/http/api";
 import { Anime, JikanApiResponse } from "../types"; // Importamos os tipos
 import { AxiosResponse } from "axios";
 
@@ -9,7 +9,7 @@ import { AxiosResponse } from "axios";
 async function getTopAnimes(): Promise<Anime[]> {
   try {
     // Tipamos a resposta do Axios para sabermos que o `data` será do tipo JikanApiResponse
-    const response: AxiosResponse<JikanApiResponse> = await jikanAPI.get(
+    const response: AxiosResponse<JikanApiResponse> = await axiosInstance.get(
       "/top/anime"
     );
     return response.data.data.slice(0, 12);

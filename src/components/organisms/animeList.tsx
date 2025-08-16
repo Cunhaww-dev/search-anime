@@ -17,7 +17,7 @@ export default function AnimeList({ animes }: AnimeListProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 justify-items-center align-items-start">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 justify-items-center align-items-start">
       {animes.map((anime) => (
         <AnimeCard key={anime.mal_id} anime={anime} />
       ))}

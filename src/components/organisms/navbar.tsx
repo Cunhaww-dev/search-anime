@@ -1,7 +1,5 @@
-// src/app/components/organisms/AppLayout.tsx
 "use client";
 
-// --- Importações (sem alterações) ---
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,14 +10,11 @@ import {
   CalendarDays,
   Clapperboard,
   PanelLeft,
-  Menu,
-  Search,
 } from "lucide-react";
 import Logo from "../atoms/logo";
 import Footer from "./footer";
 import { SearchGlobal } from "../atoms/search.";
 
-// --- Dados do Menu (sem alterações) ---
 const menuItems = [
   { title: "Início", icon: <Home size={20} />, route: "/" },
   { title: "Top Animes", icon: <Star size={20} />, route: "/top-animes" },
@@ -27,7 +22,6 @@ const menuItems = [
   { title: "Gêneros", icon: <Clapperboard size={20} />, route: "/genres/id" },
 ];
 
-// --- Componente Principal ---
 export function Navbar({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const pathname = usePathname();
@@ -35,11 +29,11 @@ export function Navbar({ children }: { children: React.ReactNode }) {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="flex min-h-screen w-full bg-gray-950 text-gray-300">
+    <div className="flex min-h-screen w-full bg-gray-950 text-gray-300 overflow-x-hidden tailwind-scrollbar">
       <aside
         className={classNames(
           "fixed top-0 left-0 z-50 h-screen flex flex-col bg-gray-900 border-r border-gray-800 transition-all duration-300",
-          isSidebarOpen ? "w-72" : "w-20"
+          isSidebarOpen ? "w-60" : "w-20"
         )}
       >
         {/* Cabeçalho da Sidebar */}
@@ -99,10 +93,10 @@ export function Navbar({ children }: { children: React.ReactNode }) {
       <div
         className={classNames(
           "flex flex-col flex-1 transition-all duration-300",
-          isSidebarOpen ? "ml-72" : "ml-20"
+          isSidebarOpen ? "ml-60" : "ml-20"
         )}
       >
-        <div className="flex bg-gray-900 pt-2 pr-4 justify-end">
+        <div className="flex bg-gray-900 pt-8 pl-12 justify-start">
           <SearchGlobal />
         </div>
 

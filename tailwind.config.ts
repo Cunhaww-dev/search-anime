@@ -1,11 +1,12 @@
-// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  // ... seu conteúdo, tema, etc.
+   content: [
+    "./src/**/*.{js,ts,jsx,tsx}", 
+  ],
   plugins: [
     require("tailwindcss-animate"),
-    require("tailwind-scrollbar"), // Adicione esta linha
+    require("tailwind-scrollbar"),
   ],
 };
 export default config;

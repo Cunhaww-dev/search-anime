@@ -10,7 +10,7 @@ export function SearchGlobal() {
       <input
         type="text"
         placeholder="Buscar animes..."
-        className="w-full bg-gray-800 border border-transparent rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:border-purple-500"
+        className="bg-gray-800 border border-transparent rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:border-purple-600 transition-colors duration-200"
       />
     </div>
   );

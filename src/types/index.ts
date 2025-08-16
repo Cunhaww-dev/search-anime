@@ -68,19 +68,22 @@ export interface Anime {
   }[];
 }
 
-// A resposta da API para buscas (como /top/anime) vem dentro de um objeto com uma chave "data".
-// Esta interface permanece a mesma e está correta.
-export interface JikanApiResponse {
-  data: Anime[];
-  pagination?: {
-    // Adicionar a paginação pode ser útil no futuro
-    last_visible_page: number;
-    has_next_page: boolean;
-    current_page: number;
-    items: {
-      count: number;
-      total: number;
-      per_page: number;
-    };
+// Novos tipos para paginação
+export interface PaginationInfo {
+  last_visible_page: number;
+  has_next_page: boolean;
+  current_page: number;
+  items: {
+    count: number;
+    total: number;
+    per_page: number;
   };
 }
+
+// A resposta da API para buscas (como /top/anime) vem dentro de um objeto com uma chave "data".
+// Esta interface foi atualizada para incluir a estrutura completa de paginação.
+export interface JikanApiResponse {
+  data: Anime[];
+  pagination: PaginationInfo;
+}
+
