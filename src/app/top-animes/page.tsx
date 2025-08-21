@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AnimeList from "@/components/organisms/animeList";
-import { useTopAnimes } from "@/hooks/useTopAnimes";
+import { useAnimes } from "@/hooks/useAnimes";
 import {
   Pagination,
   PaginationContent,
@@ -12,20 +12,35 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { cn } from "@/lib/utils";
+import { useSearch } from "@/contexts/searchContext";
+import { useDebounce } from "@/hooks/useDebounce";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TopAnimesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  const { searchTerm } = useSearch();
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
   const {
     data: response,
     isLoading,
     error,
-  } = useTopAnimes(currentPage, itemsPerPage);
+  } = useAnimes({
+    page: currentPage,
+    limit: itemsPerPage,
+    options: debouncedSearchTerm ? { query: debouncedSearchTerm } : {},
+  });
 
   const topAnimes = response?.data || [];
   const pagination = response?.pagination;
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setCurrentPage(1);
+    }
+  }, [debouncedSearchTerm]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -126,7 +141,14 @@ export default function TopAnimesPage() {
               Os animes mais bem avaliados de todos os tempos.
             </p>
           </header>
-          <div className="text-white text-center">Carregando...</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+            {Array.from({ length: 20 }).map((_, index) => (
+              <Skeleton
+                key={index}
+                className="w-full aspect-[2/3] rounded-lg bg-gray-700"
+              />
+            ))}
+          </div>{" "}
         </div>
       </main>
     );
