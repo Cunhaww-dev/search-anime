@@ -12,20 +12,24 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { cn } from "@/lib/utils";
 
 export default function TopAnimesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
-  
-  const { data: response, isLoading, error } = useTopAnimes(currentPage, itemsPerPage);
-  
+
+  const {
+    data: response,
+    isLoading,
+    error,
+  } = useTopAnimes(currentPage, itemsPerPage);
+
   const topAnimes = response?.data || [];
   const pagination = response?.pagination;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll para o topo da página ao mudar de página
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const renderPaginationItems = () => {
@@ -35,12 +39,12 @@ export default function TopAnimesPage() {
     const totalPages = pagination.last_visible_page;
     const current = pagination.current_page;
 
-    // Sempre mostrar primeira página
     if (current > 3) {
       items.push(
         <PaginationItem key={1}>
-          <PaginationLink 
-            href="#" 
+          <PaginationLink
+            href="#"
+            variant="purple"
             onClick={(e) => {
               e.preventDefault();
               handlePageChange(1);
@@ -69,6 +73,7 @@ export default function TopAnimesPage() {
         <PaginationItem key={page}>
           <PaginationLink
             href="#"
+            variant="purple"
             isActive={page === current}
             onClick={(e) => {
               e.preventDefault();
@@ -81,7 +86,6 @@ export default function TopAnimesPage() {
       );
     }
 
-    // Sempre mostrar última página
     if (current < totalPages - 2) {
       if (current < totalPages - 3) {
         items.push(
@@ -93,8 +97,9 @@ export default function TopAnimesPage() {
 
       items.push(
         <PaginationItem key={totalPages}>
-          <PaginationLink 
-            href="#" 
+          <PaginationLink
+            href="#"
+            variant="purple"
             onClick={(e) => {
               e.preventDefault();
               handlePageChange(totalPages);
@@ -150,21 +155,26 @@ export default function TopAnimesPage() {
   return (
     <main className="bg-gray-900 min-h-screen p-4 sm:p-6 md:p-8">
       <div className="container mx-auto">
-        <header className="mb-8 border-b border-gray-700 pb-4">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">
-            Top Animes
-          </h1>
-          <p className="text-gray-400 mt-2">
-            Os animes mais bem avaliados de todos os tempos.
-          </p>
-          {pagination && (
-            <p className="text-gray-500 text-sm mt-1">
-              Página {pagination.current_page} de {pagination.last_visible_page} 
-              {pagination.items && (
-                <span> • {pagination.items.total} animes no total</span>
-              )}
+        <header className="flex mb-8 justify-between items-center">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white">
+              Top Animes
+            </h1>
+            <p className="text-gray-400 mt-2">
+              Os animes mais bem avaliados de todos os tempos.
             </p>
-          )}
+          </div>
+          <div>
+            {pagination && (
+              <p className="pt-10 text-sm text-gray-400">
+                Página {pagination.current_page} de{" "}
+                {pagination.last_visible_page}
+                {pagination.items && (
+                  <span> • {pagination.items.total} animes no total</span>
+                )}
+              </p>
+            )}
+          </div>
         </header>
 
         <AnimeList animes={topAnimes} />
@@ -175,7 +185,7 @@ export default function TopAnimesPage() {
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious 
+                  <PaginationPrevious
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
@@ -183,18 +193,13 @@ export default function TopAnimesPage() {
                         handlePageChange(pagination.current_page - 1);
                       }
                     }}
-                    className={
-                      pagination.current_page <= 1 
-                        ? "pointer-events-none opacity-50" 
-                        : "text-white hover:text-gray-300"
-                    }
                   />
                 </PaginationItem>
-                
+
                 {renderPaginationItems()}
-                
+
                 <PaginationItem>
-                  <PaginationNext 
+                  <PaginationNext
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
@@ -202,11 +207,6 @@ export default function TopAnimesPage() {
                         handlePageChange(pagination.current_page + 1);
                       }
                     }}
-                    className={
-                      !pagination.has_next_page 
-                        ? "pointer-events-none opacity-50" 
-                        : "text-white hover:text-gray-300"
-                    }
                   />
                 </PaginationItem>
               </PaginationContent>
@@ -217,4 +217,3 @@ export default function TopAnimesPage() {
     </main>
   );
 }
-
