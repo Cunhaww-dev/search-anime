@@ -1,93 +1,140 @@
-// src/app/components/molecules/anime-card.tsx
+// src/components/molecules/anime-card.tsx
 
 import { Anime } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Star, Heart, Users, Dot } from "lucide-react";
+// Ícones novos e renovados para um visual mais moderno
+import {
+  Award,
+  HeartPulse,
+  Flame,
+  MonitorPlay,
+  Film,
+  Heart,
+  Users,
+  Tv2,
+  Sparkles,
+  Music4,
+  Package,
+  Play,
+} from "lucide-react";
 
 interface AnimeCardProps {
   anime: Anime;
+  maxGenres?: number;
 }
 
-const AnimeCard = ({ anime }: AnimeCardProps) => {
+const TypeIcon = ({ type }: { type: string }) => {
+  switch (type) {
+    case "TV":
+      return <Tv2 className="h-4 w-4" aria-label="Série de TV" />;
+    case "Movie":
+      return <Film className="h-4 w-4" aria-label="Filme" />;
+    case "OVA":
+      return <Package className="h-4 w-4" aria-label="OVA" />;
+    case "Special":
+      return <Sparkles className="h-4 w-4" aria-label="Especial" />;
+    case "ONA":
+      return (
+        <MonitorPlay className="h-4 w-4" aria-label="Animação de Internet" />
+      );
+    case "Music":
+      return <Music4 className="h-4 w-4" aria-label="Vídeo Musical" />;
+    default:
+      return <Play className="h-4 w-4" aria-label="Série de TV" />;
+  }
+};
+
+const AnimeCard = ({ anime, maxGenres = 2 }: AnimeCardProps) => {
   const formatNumber = (num: number | null | undefined) => {
     if (num === null || num === undefined) return "N/A";
-    return num.toLocaleString("en-US");
+    return Intl.NumberFormat("en-US", {
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(num);
   };
+
+  const genresToShow = anime.genres.slice(0, maxGenres);
 
   return (
     <Link
       href={`/anime/${anime.mal_id}`}
-      className="group relative block w-full aspect-[2/3] overflow-hidden rounded-lg shadow-lg bg-gray-800"
+      className="group relative block w-full aspect-[2/3] overflow-hidden rounded-xl shadow-lg bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
     >
       {/* 1. IMAGEM DE FUNDO */}
-      {/*    - Continua com o efeito de zoom no hover. */}
       <Image
         src={anime.images.webp.large_image_url}
         alt={`Pôster de ${anime.title}`}
         fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
       />
 
-      {/* 2. BADGE DE NOTA (SCORE) */}
-      {/*    - Sempre visível no canto superior. */}
-      <div className="absolute top-2 left-2 z-20">
-        <div className="flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs font-bold text-white backdrop-blur-sm">
-          <Star className="h-3 w-3 text-yellow-400" fill="currentColor" />
-          <span>{anime.score ? anime.score.toFixed(2) : "N/A"}</span>
-        </div>
-      </div>
-
-      {/* 3. CAMADA INICIAL (SEMPRE VISÍVEL, SOME NO HOVER) */}
-      {/*    - Contém o gradiente e o título inicial. */}
-      {/*    - 'group-hover:opacity-0': Faz esta camada desaparecer suavemente no hover. */}
+      {/* 2. CAMADA INICIAL (SÓ TÍTULO) */}
       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300 group-hover:opacity-0">
-        <h3 className="text-base font-bold text-white" title={anime.title}>
+        <h3
+          className="text-lg font-bold text-white leading-tight line-clamp-2"
+          title={anime.title}
+        >
           {anime.title}
         </h3>
       </div>
 
-      {/* 4. CAMADA DE HOVER (COMEÇA INVISÍVEL, APARECE NO HOVER) */}
-      {/*    - Contém todas as informações detalhadas. */}
-      {/*    - 'opacity-0 group-hover:opacity-100': Faz esta camada aparecer no hover. */}
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/80 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        
-        {/* Título Principal e Secundário (repetido aqui para consistência) */}
-        <h3 className="text-lg font-bold text-white" title={anime.title}>
-          {anime.title}
-        </h3>
-        <p className="text-sm text-gray-300 truncate">
-          {anime.title_english || ""}
-        </p>
-
-        {/* Informações Adicionais */}
-        <div className="mt-4 space-y-3 text-sm">
-          <div className="flex items-center text-gray-300">
-            <span>{anime.type}</span>
-            <Dot />
-            <span
-              className={cn(
-                anime.status === "Finished Airing"
-                  ? "text-blue-400"
-                  : "text-green-400"
-              )}
+      {/* 3. CAMADA DE HOVER (INFORMAÇÕES COMPLETAS) */}
+      <div className="absolute inset-0 flex flex-col justify-between bg-gradient-to-t from-black/90 via-black/70 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        {/* Seção Superior: Nota e Tipo */}
+        <div className="flex justify-between items-start">
+          <div
+            className="flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 text-sm font-bold text-white backdrop-blur-sm"
+            aria-label={`Nota: ${anime.score?.toFixed(2) || "Não avaliado"}`}
+          >
+            <Award className="h-4 w-4 text-amber-400" fill="currentColor" />
+            <span>{anime.score ? anime.score.toFixed(2) : "N/A"}</span>
+          </div>
+          {anime.type && (
+            <div
+              className="flex items-center gap-1.5 rounded-full bg-black/60 p-2 text-white backdrop-blur-sm"
+              aria-label={`Tipo: ${anime.type}`}
             >
-              {anime.status}
-            </span>
+              <TypeIcon type={anime.type} />
+            </div>
+          )}
+        </div>
+
+        {/* Seção Inferior: Título e Métricas */}
+        <div className="space-y-3">
+          <h3 className="text-xl font-bold text-white" title={anime.title}>
+            {anime.title}
+          </h3>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {genresToShow.map((genre) => (
+              <span
+                key={genre.mal_id}
+                className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-semibold text-gray-200 backdrop-blur-sm"
+              >
+                {genre.name}
+              </span>
+            ))}
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-red-400">
-              <Heart className="h-4 w-4" />
-              <span className="font-medium text-white">
+          <div className="flex items-center gap-5 text-white">
+            <div
+              className="flex items-center gap-1.5"
+              aria-label={`${formatNumber(anime.favorites)} favoritos`}
+            >
+              <Heart className="h-5 w-5 text-red-500" fill="currentColor" />{" "}
+              <span className="font-semibold text-base">
                 {formatNumber(anime.favorites)}
               </span>
             </div>
-            <div className="flex items-center gap-1.5 text-blue-300">
-              <Users className="h-4 w-4" />
-              <span className="font-medium text-white">
+            <div
+              className="flex items-center gap-1.5"
+              aria-label={`${formatNumber(anime.members)} na comunidade`}
+            >
+              <Users className="h-5 w-5 text-sky-400" fill="currentColor" />
+              <span className="font-semibold text-base">
                 {formatNumber(anime.members)}
               </span>
             </div>

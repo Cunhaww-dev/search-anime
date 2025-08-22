@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// 1. Definimos as props que nosso componente vai receber
 interface AnimeCarouselRowProps {
   title: string;
   animes: Anime[];

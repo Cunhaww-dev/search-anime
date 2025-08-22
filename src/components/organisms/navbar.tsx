@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
@@ -15,6 +15,7 @@ import Logo from "../atoms/logo";
 import Footer from "./footer";
 import { SearchGlobal } from "../atoms/searchGlobal";
 import { SearchProvider } from "@/contexts/searchContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [
   { title: "Início", icon: <Home size={20} />, route: "/" },
@@ -25,7 +26,14 @@ const menuItems = [
 
 export function Navbar({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const isMobile = useIsMobile();
   const pathname = usePathname();
+  const showSearch = pathname !== "/";
+
+  useEffect(() => {
+    setIsSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -38,7 +46,6 @@ export function Navbar({ children }: { children: React.ReactNode }) {
             isSidebarOpen ? "w-60" : "w-20"
           )}
         >
-          {/* Cabeçalho da Sidebar */}
           <div
             className={classNames(
               "flex py-8 items-center justify-between h-16 border-b border-gray-800",
@@ -61,7 +68,6 @@ export function Navbar({ children }: { children: React.ReactNode }) {
             </button>
           </div>
 
-          {/* Itens do Menu */}
           <ul className="space-y-2 font-medium p-4">
             {menuItems.map((item) => {
               const isActive = pathname === item.route;
@@ -101,7 +107,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           )}
         >
           <div className="flex bg-gray-900 pt-8 pl-12 justify-start">
-            <SearchGlobal />
+            {showSearch && <SearchGlobal />}
           </div>
 
           <main className="flex-1">{children}</main>
