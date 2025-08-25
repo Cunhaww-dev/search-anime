@@ -1,43 +1,42 @@
-// /app/page.tsx
+"use client";
 
-import AnimeCard from "@/components/molecules/animeCard";
-import { axiosInstance } from "@/http/api";
-import { Anime, JikanApiResponse } from "../types"; // Importamos os tipos
-import { AxiosResponse } from "axios";
+import { AnimeCarouselRow } from "@/components/organisms/animeCarousel";
+import { useAnimes } from "@/hooks/useAnimes";
 
-// A função agora tem um tipo de retorno explícito: Promise<Anime[]>
-async function getTopAnimes(): Promise<Anime[]> {
-  try {
-    // Tipamos a resposta do Axios para sabermos que o `data` será do tipo JikanApiResponse
-    const response: AxiosResponse<JikanApiResponse> = await axiosInstance.get(
-      "/top/anime"
-    );
-    return response.data.data.slice(0, 12);
-  } catch (error) {
-    console.error("Falha ao buscar animes do topo:", error);
-    return [];
-  }
-}
+export default function HomePage() {
+  const { data: topAnimesResponse, isLoading: isLoadingTop } = useAnimes({
+    limit: 10,
+  });
 
-export default async function HomePage() {
-  // const topAnimes = await getTopAnimes();
+  const { data: actionAnimesResponse, isLoading: isLoadingAction } = useAnimes({
+    limit: 10,
+    options: { genreId: 1 },
+  });
+
+  const { data: seasonAnimesResponse, isLoading: isLoadingSeason } = useAnimes({
+    limit: 10,
+    options: { season: "now" },
+  });
 
   return (
-    <main className="p-4 sm:p-6 md:p-8">
-      <section>
-        <h2 className="text-2xl font-bold text-gray-200 mb-6 border-l-4 border-blue-500 pl-4">
-          Aqui você pode explorar os animes
-        </h2>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-            {topAnimes.map((anime) => (
-              <AnimeCard key={anime.mal_id} anime={anime} />
-            ))}
-          </div> */}
-        {/* TASK 
-            Criar seções de carroseis por gênero. Utilizasr Netflix de exemplo
-            Criar um componente para isso e chamar aqui
-          */}
-      </section>
+    <main className="w-full py-8 px-20 space-y-16 bg-gray-900">
+      <AnimeCarouselRow
+        title="Top Animes Populares"
+        animes={topAnimesResponse?.data || []}
+        isLoading={isLoadingTop}
+      />
+
+      <AnimeCarouselRow
+        title="Mergulhe na próxima Ação"
+        animes={actionAnimesResponse?.data || []}
+        isLoading={isLoadingAction}
+      />
+
+      <AnimeCarouselRow
+        title="Em Alta na Temporada"
+        animes={seasonAnimesResponse?.data || []}
+        isLoading={isLoadingSeason}
+      />
     </main>
   );
 }
