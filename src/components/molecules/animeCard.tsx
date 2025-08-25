@@ -1,14 +1,8 @@
-// src/components/molecules/anime-card.tsx
-
 import { Anime } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-// Ícones novos e renovados para um visual mais moderno
 import {
   Award,
-  HeartPulse,
-  Flame,
   MonitorPlay,
   Film,
   Heart,

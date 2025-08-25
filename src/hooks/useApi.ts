@@ -7,12 +7,13 @@ type ApiParams = {
   limit: number;
   q?: string;
   genres?: number;
+  sfw?: boolean; 
 };
 
 export type AnimesApiOptions = {
   query?: string;
   genreId?: number;
-  season?: "now" | "upcoming" | "archive"; // Opções da API para temporada
+  season?: "now" | "upcoming" | "archive";
 };
 
 export const UseApi = () => {
@@ -22,22 +23,26 @@ export const UseApi = () => {
       limit: number = 20,
       options?: AnimesApiOptions
     ): Promise<JikanApiResponse> => {
-      let endpoint: string;
+      let endpoint = "/anime";
+
       const params: ApiParams = {
         page,
         limit,
+        sfw: true,
       };
 
       if (options?.query) {
-        endpoint = "/anime";
         params.q = options.query;
-      } else if (options?.genreId) {
-        endpoint = "/anime";
+      }
+      if (options?.genreId) {
         params.genres = options.genreId;
-      } else if (options?.season) {
+      }
+
+      if (options?.season) {
         endpoint = `/seasons/${options.season}`;
-      } else {
-        // Se nenhuma opção for passada, o padrão é buscar os top animes.
+        delete params.q;
+        delete params.genres;
+      } else if (!options?.query && !options?.genreId) {
         endpoint = "/top/anime";
       }
 
@@ -46,7 +51,7 @@ export const UseApi = () => {
           await axiosInstance.get(endpoint, { params });
         return response.data;
       } catch (error) {
-        console.error("Erro ao buscar animes:", error);
+        console.log("Erro ao buscar animes:", error);
         return {
           data: [],
           pagination: {

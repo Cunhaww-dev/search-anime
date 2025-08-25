@@ -4,24 +4,18 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
-import {
-  Home,
-  Star,
-  CalendarDays,
-  Clapperboard,
-  PanelLeft,
-} from "lucide-react";
+import { Home, Star, CalendarDays, PanelLeft } from "lucide-react";
 import Logo from "../atoms/logo";
 import Footer from "./footer";
 import { SearchGlobal } from "../atoms/searchGlobal";
 import { SearchProvider } from "@/contexts/searchContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { GenreNavigation } from "./genreNavigation";
 
 const menuItems = [
   { title: "Início", icon: <Home size={20} />, route: "/" },
   { title: "Top Animes", icon: <Star size={20} />, route: "/top-animes" },
   { title: "Temporada", icon: <CalendarDays size={20} />, route: "/season" },
-  { title: "Gêneros", icon: <Clapperboard size={20} />, route: "/genres/id" },
 ];
 
 export function Navbar({ children }: { children: React.ReactNode }) {
@@ -29,7 +23,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
 
   const isMobile = useIsMobile();
   const pathname = usePathname();
-  const showSearch = pathname !== "/";
+  const showSearch = pathname !== "/" && !pathname.startsWith("/season");
 
   useEffect(() => {
     setIsSidebarOpen(!isMobile);
@@ -68,7 +62,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
             </button>
           </div>
 
-          <ul className="space-y-2 font-medium p-4">
+          <ul className="flex-1 space-y-2 font-medium p-4 overflow-y-auto min-h-0 tailwind-scrollbar">
             {menuItems.map((item) => {
               const isActive = pathname === item.route;
               return (
@@ -97,6 +91,8 @@ export function Navbar({ children }: { children: React.ReactNode }) {
                 </li>
               );
             })}
+
+            <GenreNavigation isSidebarOpen={isSidebarOpen} />
           </ul>
         </aside>
 
@@ -106,7 +102,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
             isSidebarOpen ? "ml-60" : "ml-20"
           )}
         >
-          <div className="flex bg-gray-900 pt-8 pl-12 justify-start">
+          <div className="fixed w-full bg-gray-900 py-4 pl-12 justify-start z-50">
             {showSearch && <SearchGlobal />}
           </div>
 
