@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import AnimeList from "@/components/organisms/animeList";
 import { useAnimes } from "@/hooks/useAnimes";
 import { useSearch } from "@/contexts/searchContext";
@@ -22,7 +22,7 @@ import { useParams } from "next/navigation";
 
 export default function GenrePage() {
   const params = useParams<{ id: string }>();
-  const id = Array.isArray(params.id) ? params.id[0] : params.id; 
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [genreName, setGenreName] = useState<string>("");
