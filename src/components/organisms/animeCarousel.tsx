@@ -62,8 +62,8 @@ export function AnimeCarouselRow({
           ))}
         </CarouselContent>
 
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="cursor-pointer hover:scale-105 transition-transform" />
+        <CarouselNext className="cursor-pointer hover:scale-105 transition-transform" />
       </Carousel>
     </section>
   );

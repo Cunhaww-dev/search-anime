@@ -53,7 +53,8 @@ const AnimeCard = ({ anime, maxGenres = 2 }: AnimeCardProps) => {
 
   return (
     <Link
-      href={`/anime/${anime.mal_id}`}
+      // href={`/anime/${anime.mal_id}`}
+      href={"/season"}
       className="group relative block w-full aspect-[2/3] overflow-hidden rounded-xl shadow-lg bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950"
     >
       {/* 1. IMAGEM DE FUNDO */}
