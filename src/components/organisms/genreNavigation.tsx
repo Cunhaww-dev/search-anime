@@ -23,9 +23,13 @@ interface Genre {
 
 interface GenreNavigationProps {
   isSidebarOpen: boolean;
+  onNavigate?: () => void;
 }
 
-export function GenreNavigation({ isSidebarOpen }: GenreNavigationProps) {
+export function GenreNavigation({
+  isSidebarOpen,
+  onNavigate,
+}: GenreNavigationProps) {
   const [allGenres, setAllGenres] = useState<Genre[]>([]);
   const [popularGenres, setPopularGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
