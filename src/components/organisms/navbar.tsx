@@ -146,7 +146,7 @@ export function Navbar({ children }: { children: React.ReactNode }) {
           {/* Header/topbar */}
           <div
             className={classNames(
-              "fixed left-0 w-full bg-gray-900 py-4 z-40 flex items-center gap-4",
+              "fixed left-0 w-full bg-gray-900 py-4 min-h-16 z-40 flex items-center gap-4",
               "pl-4 pr-4",
               !isMobile && (isSidebarOpen ? "md:pl-60" : "md:pl-20")
             )}
