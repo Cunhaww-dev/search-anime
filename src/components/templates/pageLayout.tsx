@@ -14,7 +14,7 @@ export const PageLayout = ({
   children,
 }: PageLayoutProps) => {
   return (
-    <main className="min-h-screen p-4 sm:p-6 md:p-8 bg-gray-900">
+    <main className="min-h-screen p-2 sm:p-4 md:p-6 bg-gray-900">
       <div className="container mx-auto">
         <header className="flex flex-col sm:flex-row mb-8 justify-between items-start sm:items-center">
           <div>
