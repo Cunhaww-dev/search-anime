@@ -19,7 +19,7 @@ export default function HomePage() {
   });
 
   return (
-    <main className="w-full py-8 px-20 space-y-16 bg-gray-900">
+    <main className="w-full py-8 px-4 sm:px-6 md:px-12 lg:px-20 space-y-12 bg-gray-900">
       <AnimeCarouselRow
         title="Em Alta na Temporada"
         animes={seasonAnimesResponse?.data || []}
